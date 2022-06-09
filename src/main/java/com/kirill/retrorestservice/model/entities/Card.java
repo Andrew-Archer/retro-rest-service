@@ -1,6 +1,7 @@
-package com.kirill.retrorestservice.model;
+package com.kirill.retrorestservice.model.entities;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -21,6 +22,9 @@ public class Card {
     @JoinColumn(name = "BOARD_COLUMN_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private BoardColumn boardColumn;
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     public BoardColumn getBoardColumn() {
         return boardColumn;

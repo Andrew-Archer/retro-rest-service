@@ -1,4 +1,4 @@
-package com.kirill.retrorestservice.model;
+package com.kirill.retrorestservice.model.entities;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,14 +13,11 @@ public class BoardColumn {
     @Id
     private UUID id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME_", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "boardColumn")
     private List<Card> cards;
-
-    @Column(name = "DELETED_BY")
-    private String deletedBy;
 
     @JoinColumn(name = "BOARD_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -48,14 +45,6 @@ public class BoardColumn {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDeletedBy() {
-        return deletedBy;
-    }
-
-    public void setDeletedBy(String deletedBy) {
-        this.deletedBy = deletedBy;
     }
 
     public UUID getId() {

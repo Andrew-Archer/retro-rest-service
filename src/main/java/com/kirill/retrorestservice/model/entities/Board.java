@@ -1,4 +1,4 @@
-package com.kirill.retrorestservice.model;
+package com.kirill.retrorestservice.model.entities;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +14,7 @@ public class Board {
     @Id
     private UUID id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME_", nullable = false)
     private String name;
 
 

@@ -1,6 +1,7 @@
 package com.kirill.retrorestservice.controllers;
 
-import com.kirill.retrorestservice.model.User;
+import com.kirill.retrorestservice.model.entities.User;
+import com.kirill.retrorestservice.model.dtos.UserDto;
 import com.kirill.retrorestservice.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +20,24 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(userService.findById(id));
+    public ResponseEntity<UserDto> findById(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(UserDto.toDto(userService.findById(id)));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserDto> findByEmail(@PathVariable("email") String email) {
+        return ResponseEntity.ok(UserDto.toDto(userService.findByEmail(email)));
     }
 
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<List<UserDto>> findAll() {
+        return ResponseEntity.ok(UserDto.toDtos(userService.findAll()));
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
-        return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> create(@RequestBody UserDto userDto) {
+        return new ResponseEntity<>(UserDto.toDto(userService.create(toEntity(userDto))), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -43,7 +49,19 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") UUID id) {
-        userService.delete(id);
+        userService.deleteById(id);
     }
 
+    @DeleteMapping("/email/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByEmail(@PathVariable("email") String email) {
+        userService.deleteByEmail(email);
+    }
+
+    private User toEntity(UserDto userDto) {
+        var user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        return user;
+    }
 }

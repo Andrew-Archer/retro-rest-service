@@ -1,6 +1,6 @@
 package com.kirill.retrorestservice.services;
 
-import com.kirill.retrorestservice.model.Card;
+import com.kirill.retrorestservice.model.entities.Card;
 import com.kirill.retrorestservice.repositories.CardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,10 @@ public class CardService {
     @Transactional(readOnly = true)
     public List<Card> findAll() {
         return cardRepository.findAll();
+    }
+    @Transactional(readOnly = true)
+    public List<Card> findAllByIds(Iterable<UUID> ids){
+        return cardRepository.findAllById(ids);
     }
 
     @Transactional

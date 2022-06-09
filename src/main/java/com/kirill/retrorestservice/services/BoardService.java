@@ -1,12 +1,15 @@
 package com.kirill.retrorestservice.services;
 
-import com.kirill.retrorestservice.model.Board;
+import com.kirill.retrorestservice.model.entities.Board;
+import com.kirill.retrorestservice.model.dtos.BoardDto;
 import com.kirill.retrorestservice.repositories.BoardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class BoardService {
@@ -39,5 +42,9 @@ public class BoardService {
     @Transactional
     public void delete(UUID id) {
         boardRepository.delete(findById(id));
+    }
+
+    public List<Board> findAllByIds(List<BoardDto> boards) {
+        return boardRepository.findAllById(boards.stream().map(BoardDto::getId).collect(toList()));
     }
 }
