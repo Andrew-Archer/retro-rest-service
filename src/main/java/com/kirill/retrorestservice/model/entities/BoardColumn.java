@@ -9,6 +9,7 @@ import java.util.UUID;
 })
 @Entity
 public class BoardColumn {
+    @GeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
