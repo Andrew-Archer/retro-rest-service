@@ -42,8 +42,8 @@ public class UserController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<User> update(@RequestBody User user) {
-        return ResponseEntity.ok(userService.update(user));
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(UserDto.toDto(userService.update(toEntity(userDto))));
     }
 
     @DeleteMapping("/{id}")
