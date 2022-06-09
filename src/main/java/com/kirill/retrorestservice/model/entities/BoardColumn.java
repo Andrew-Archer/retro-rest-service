@@ -17,7 +17,7 @@ public class BoardColumn {
     @Column(name = "NAME_", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "boardColumn")
+    @OneToMany(mappedBy = "boardColumn", cascade = CascadeType.REMOVE)
     private List<Card> cards;
 
     @JoinColumn(name = "BOARD_ID", nullable = false)
