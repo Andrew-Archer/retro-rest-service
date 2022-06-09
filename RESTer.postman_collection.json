@@ -61,32 +61,6 @@
 							"response": []
 						},
 						{
-							"name": "Delete",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Basic YWRtaW46MTIzNDU2cFM="
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8080/api/board/96dd457-6e9b-47f9-9906-f240bf8efbc3",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"board",
-										"96dd457-6e9b-47f9-9906-f240bf8efbc3"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "GetById",
 							"request": {
 								"method": "GET",
@@ -180,6 +154,32 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/board/96dd457-6e9b-47f9-9906-f240bf8efbc3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"board",
+										"96dd457-6e9b-47f9-9906-f240bf8efbc3"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -202,7 +202,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"boardId\":  \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"name\":     \"What went good\"\n}"
+									"raw": "{\n    \"board\":  \"b9b892c5-1b4c-4051-91fa-bb2f5506cad3\",\n    \"name\":     \"What went good\"\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/api/boardColumn",
@@ -361,7 +361,87 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"boardColumnId\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
+									"raw": "{\n    \"boardColumn\":    \"800f2941-da95-4085-a890-d5ab3833c842\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/card",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetByBoardColumnId",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/card/boardColumn/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card",
+										"boardColumn",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/card",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":               \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardColumnId\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/api/card",
@@ -403,66 +483,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "GetByBoardColumnId",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Basic YWRtaW46MTIzNDU2cFM="
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8080/api/card/boardColumn/95c0ba25-eda5-45d2-961f-c3c55133fce8",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"card",
-										"boardColumn",
-										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Basic YWRtaW46MTIzNDU2cFM="
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"id\":               \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardColumnId\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
-								},
-								"url": {
-									"raw": "http://localhost:8080/api/card",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"card"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
@@ -485,7 +505,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"cardId\": \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"content\": \"Some card content\"\n}"
+									"raw": "{\n    \"card\": \"fd833f37-c922-449e-96e8-dea35245ea36\",\n    \"content\": \"Some card content\"\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/api/comment",
@@ -599,6 +619,41 @@
 									"mode": "raw",
 									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"cardId\":   \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"content\":  \"Some card content\"\n}"
 								},
+								"url": {
+									"raw": "http://localhost:8080/api/comment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "123456Ps",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
 								"url": {
 									"raw": "http://localhost:8080/api/comment",
 									"protocol": "http",
@@ -794,7 +849,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/api/user/223e4567-e89b-12d3-a456-426614174000",
+									"raw": "http://localhost:8080/api/user/2679a112-8c6f-463d-9059-4ec705f6ad51",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -803,7 +858,7 @@
 									"path": [
 										"api",
 										"user",
-										"223e4567-e89b-12d3-a456-426614174000"
+										"2679a112-8c6f-463d-9059-4ec705f6ad51"
 									]
 								}
 							},
@@ -833,6 +888,27 @@
 									"path": [
 										"api",
 										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetFullDataTree",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/user/fullDataTree",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user",
+										"fullDataTree"
 									]
 								}
 							},
