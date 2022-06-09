@@ -79,9 +79,9 @@ CREATE TABLE public.comment_ (
 	card_id uuid NOT NULL,
 	CONSTRAINT comment_pkey PRIMARY KEY (id)
 );
-CREATE INDEX idx_comment__card_id ON public.card USING btree (card_id);
+CREATE INDEX idx_comment__card_id ON public.comment_ USING btree (card_id);
 
 
 -- public.board foreign keys
 
-ALTER TABLE public.comment_ ADD CONSTRAINT fk793nowlfj7ikow1cs8gwdkoq0 FOREIGN KEY (card_id) REFERENCES public.card_(id);
+ALTER TABLE public.comment_ ADD CONSTRAINT fk793nowlfj7ikow1cs8gwdkoq0 FOREIGN KEY (card_id) REFERENCES public.card(id);
