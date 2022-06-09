@@ -21,7 +21,7 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Board findById(UUID id) {
-        return boardRepository.findById(id).get();
+        return boardRepository.findById(id).orElse(null);
     }
 
     @Transactional(readOnly = true)
