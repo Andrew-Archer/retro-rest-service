@@ -1,0 +1,846 @@
+{
+	"info": {
+		"_postman_id": "9aba55de-d447-44d3-a508-6642e703769f",
+		"name": "RESTer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16120560"
+	},
+	"item": [
+		{
+			"name": "Retro",
+			"item": [
+				{
+					"name": "Board",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "123456Ps",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"owner\":  \"223e4567-e89b-12d3-a456-426614174000\",\n    \"name\":     \"Desk1\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/board",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"board"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/board/96dd457-6e9b-47f9-9906-f240bf8efbc3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"board",
+										"96dd457-6e9b-47f9-9906-f240bf8efbc3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/board/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"board",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":       \"e02b11f5-4f71-45a7-99d4-f517b6387d64\",\n    \"owner\":  \"223e4567-e89b-12d3-a456-426614174000\",\n    \"name\":     \"Updated desk\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/board",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"board"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "123456Ps",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/board/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"board",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "BoardColumn",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardId\":  \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"name\":     \"What went good\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/boardColumn",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"boardColumn"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/boardColumn/96dd457-6e9b-47f9-9906-f240bf8efbc3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"boardColumn",
+										"96dd457-6e9b-47f9-9906-f240bf8efbc3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/boardColumn/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"boardColumn",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardId\":  \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"name\":     \"What went good\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/boardColumn",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"boardColumn"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "123456Ps",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/boardColumn/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"boardColumn",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Card",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardColumnId\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/card",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/card/96dd457-6e9b-47f9-9906-f240bf8efbc3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card",
+										"96dd457-6e9b-47f9-9906-f240bf8efbc3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetByBoardColumnId",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/card/boardColumn/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card",
+										"boardColumn",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":               \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardColumnId\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/card",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"card"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comment",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"content\": \"Some card content\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/comment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/comment/96dd457-6e9b-47f9-9906-f240bf8efbc3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment",
+										"96dd457-6e9b-47f9-9906-f240bf8efbc3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetByCardId",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/comment/card/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment",
+										"card",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/comment/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"cardId\":   \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"content\":  \"Some card content\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/comment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "123456Ps",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"some@email.com\",\n    \"password\": \"pass\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteByEmail",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/user/email/some@mail.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user",
+										"email",
+										"some@mail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteById",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/user/95c0ba25-eda5-45d2-961f-c3c55133fce8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user",
+										"95c0ba25-eda5-45d2-961f-c3c55133fce8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "123456Ps",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetByEmail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/user/email/some@email.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user",
+										"email",
+										"some@email.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46MTIzNDU2cFM="
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/user/223e4567-e89b-12d3-a456-426614174000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user",
+										"223e4567-e89b-12d3-a456-426614174000"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"223e4567-e89b-12d3-a456-426614174000\",\n    \"email\": \"updated@email.com\",\n    \"password\": \"updatedpass\"\n}\n"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
