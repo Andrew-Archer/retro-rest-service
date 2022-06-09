@@ -52,7 +52,7 @@ public class UserController {
         userService.deleteById(id);
     }
 
-    @DeleteMapping("/email/{id}")
+    @DeleteMapping("/email/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByEmail(@PathVariable("email") String email) {
         userService.deleteByEmail(email);
@@ -60,6 +60,7 @@ public class UserController {
 
     private User toEntity(UserDto userDto) {
         var user = new User();
+        user.setId(userDto.getId());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         return user;

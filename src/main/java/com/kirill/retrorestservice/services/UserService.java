@@ -19,14 +19,7 @@ public class UserService {
 
     @Transactional
     public User update(User user) {
-        /*var existingUserId = user.getId();
-        if (existingUserId != null) {
-            var userToUpdate = findById(existingUserId);
-            BeanUtils.copyProperties(user, userToUpdate);*/
-            return userRepository.save(user);
-       /* }else{
-            return null;
-        }*/
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -50,7 +43,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findByEmail(String email){
+    public User findByEmail(String email) {
         return userRepository.getByEmail(email);
     }
 
