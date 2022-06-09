@@ -40,8 +40,8 @@ public class BoardController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<BoardDto> update(@RequestBody Board board) {
-        return ResponseEntity.ok(BoardDto.toDto(boardService.update(board)));
+    public ResponseEntity<BoardDto> update(@RequestBody BoardDto boardDto) {
+        return ResponseEntity.ok(BoardDto.toDto(boardService.update(toEntity(boardDto))));
     }
 
     @DeleteMapping("/{id}")
