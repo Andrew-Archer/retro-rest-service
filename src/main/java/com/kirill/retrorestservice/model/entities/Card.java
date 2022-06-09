@@ -19,6 +19,9 @@ public class Card {
     @Lob
     private String title;
 
+    @Column(name = "LIKES")
+    private Long likes;
+
     @JoinColumn(name = "BOARD_COLUMN_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private BoardColumn boardColumn;
@@ -48,5 +51,21 @@ public class Card {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Long likes) {
+        this.likes = likes;
     }
 }

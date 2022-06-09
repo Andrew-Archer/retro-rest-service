@@ -16,6 +16,8 @@ public class CardDto {
     private UUID id;
     private String title;
     private UUID boardColumn;
+    private Long likes;
+    private List<CommentDto> comments;
 
     public static CardDto toDto(Card card) {
         if (card == null) return null;
@@ -23,6 +25,8 @@ public class CardDto {
                 .id(card.getId())
                 .boardColumn(card.getBoardColumn().getId())
                 .title(card.getTitle())
+                .likes(card.getLikes())
+                .comments(CommentDto.toDtos(card.getComments()))
                 .build();
     }
 

@@ -57,6 +57,7 @@ ALTER TABLE public.board_column ADD CONSTRAINT fkoujws5jhc57d2ligw4mj9m52a FOREI
 CREATE TABLE public.card (
 	id uuid NOT NULL,
 	title varchar(1024) NULL,
+	likes int8 NULL,
 	board_column_id uuid NOT NULL,
 	CONSTRAINT card_pkey PRIMARY KEY (id)
 );

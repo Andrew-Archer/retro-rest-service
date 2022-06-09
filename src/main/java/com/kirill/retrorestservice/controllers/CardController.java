@@ -55,6 +55,7 @@ public class CardController {
         card.setId(cardDto.getId());
         card.setBoardColumn(boardColumnService.findById(cardDto.getBoardColumn()));
         card.setTitle(cardDto.getTitle());
+        card.setLikes(cardDto.getLikes());
         return card;
     }
 }
