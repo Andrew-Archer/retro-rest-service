@@ -21,6 +21,7 @@ public class CommentDto {
     private UUID card;
 
     public static CommentDto toDto(Comment comment) {
+        if (comment == null) return null;
         return CommentDto.builder()
                 .id(comment.getId())
                 .content(comment.getContent())

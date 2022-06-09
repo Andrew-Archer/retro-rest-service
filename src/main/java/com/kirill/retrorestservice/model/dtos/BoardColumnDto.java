@@ -20,6 +20,7 @@ public class BoardColumnDto {
     private UUID board;
 
     public static BoardColumnDto toDto(BoardColumn boardColumn) {
+        if (boardColumn == null) return null;
         return BoardColumnDto.builder()
                 .id(boardColumn.getId())
                 .name(boardColumn.getName())

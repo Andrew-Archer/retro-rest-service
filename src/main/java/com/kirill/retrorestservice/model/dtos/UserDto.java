@@ -20,6 +20,7 @@ public class UserDto {
     protected String email;
 
     public static UserDto toDto(User user) {
+        if (user == null) return null;
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())

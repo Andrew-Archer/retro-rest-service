@@ -18,6 +18,7 @@ public class CardDto {
     private UUID boardColumn;
 
     public static CardDto toDto(Card card) {
+        if (card == null) return null;
         return CardDto.builder()
                 .id(card.getId())
                 .boardColumn(card.getBoardColumn().getId())

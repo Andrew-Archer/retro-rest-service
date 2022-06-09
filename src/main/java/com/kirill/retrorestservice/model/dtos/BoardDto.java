@@ -20,6 +20,7 @@ public class BoardDto {
     private UUID owner;
 
     public static BoardDto toDto(Board board) {
+        if (board == null) return null;
         return BoardDto.builder()
                 .id(board.getId())
                 .owner(board.getOwner().getId())
