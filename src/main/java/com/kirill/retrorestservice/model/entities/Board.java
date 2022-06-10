@@ -1,6 +1,7 @@
 package com.kirill.retrorestservice.model.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,18 @@ public class Board {
     @JoinColumn(name = "OWNER_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User owner;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATION_DATE", nullable = false)
+    private Date creationDate;
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public List<BoardColumn> getColumns() {
         return columns;
@@ -56,4 +69,6 @@ public class Board {
     public void setId(UUID id) {
         this.id = id;
     }
+
+
 }

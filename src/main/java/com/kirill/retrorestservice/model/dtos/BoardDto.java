@@ -4,10 +4,7 @@ import com.kirill.retrorestservice.model.entities.Board;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -15,6 +12,7 @@ import static java.util.stream.Collectors.toList;
 @Builder
 public class BoardDto {
     private UUID id;
+    private Date creationDate;
     private String name;
     private List<BoardColumnDto> columns;
     private UUID owner;
@@ -24,6 +22,7 @@ public class BoardDto {
         return BoardDto.builder()
                 .id(board.getId())
                 .owner(board.getOwner().getId())
+                .creationDate(board.getCreationDate())
                 .name(board.getName())
                 .columns(BoardColumnDto.toDtos(board.getColumns()))
                 .build();
