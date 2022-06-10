@@ -36,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //Enable authorization
                 .authorizeRequests()
                 //Allow access to static resources as js, images, css
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/", "index.html", "/css/**", "/js/**", "/images/**").permitAll()
                 //Access to boards list has only user with role admin
                 .antMatchers("/listBoard.html").hasRole("ADMIN")
                 .and()
