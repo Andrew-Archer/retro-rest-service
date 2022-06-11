@@ -1,8 +1,4 @@
-var openModal = function(modal) {
-    return function() {
-        modal.classList.remove('displayNone');
-    }
-}
+
 var httpVerbs = {
     doPost(url, data, callback) {
             return window.fetch(url, {method: "POST",
@@ -11,13 +7,13 @@ var httpVerbs = {
                             .then(callback);
         },
     doPut(){
-        return window.fetch(url, )
+        return window.fetch(url, );
     },
     doGet(url, callback){
         return window.fetch(url, {method: "GET"}).then(callback);
     },
     doDelete(){}
-}
+};
 
 let userRepository = {
     createUser(email, password, callback){
@@ -32,17 +28,29 @@ let userRepository = {
             "email": email,
             "active": true
         },
-        callback)
+        callback);
     },
     updateUser(){},
     deleteUser(){},
+    getUserByEmail(email, callback){
+        return httpVerbs.doGet("./api/user/email/" + email, callback);
+    },
+    getUserById(id, callback){
+        return httpVerbs.doGet("./api/user/" + id, callback);
+    },
     getUserAll(callback){
         return httpVerbs.doGet("./api/user", callback);
     },
     gerUserByName(name, callback){
         return httpVerbs.doGet("./api/user/" + name, callback)
     }
-}
+};
+
+var openModal = function(modal) {
+    return function() {
+        modal.classList.remove('display--none');
+    };
+};
 
 const REGEXP_EMAIL = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGEXP_PASSWORD = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
@@ -51,8 +59,8 @@ const btnIn = document.querySelector('#in');
 const btnReg = document.querySelector('#reg');
 const modalIn = document.querySelector('#modal-in');
 const modalReg = document.querySelector('#modal-reg');
-const btnModalIn = modalIn.querySelector('#btn-in');
-const btnModalInReg = modalIn.querySelector('#btn-in-reg');
+const btnModalIn = modalIn.querySelector('#btn-auth--in');
+const btnModalInReg = modalIn.querySelector('#btn-auth--reg');
 const btnModalReg = modalReg.querySelector('#btn-reg');
 
 const modalEmailIn = modalIn.querySelector('#emailIn');
@@ -62,6 +70,7 @@ const modalEmailReg = modalReg.querySelector('#emailReg');
 const modalPasswordReg = modalReg.querySelector('#passwordReg');
 const modalPasswordRegR = modalReg.querySelector('#passwordRegRepeat');
 
+const errLP = modalIn.querySelector('#errorLP');
 const errE = modalReg.querySelector('#errorE');
 const errP = modalReg.querySelector('#errorP');
 const errPR = modalReg.querySelector('#errorPR');
@@ -72,28 +81,40 @@ btnReg.addEventListener('click', openModal(modalReg));
 modalIn.addEventListener('click', (e) => {
     e.preventDefault();
     const target = e.target;
-    if ((target.closest('.modal') && !target.closest('#btn-in') && !target.closest('#btn-in-reg')) || target.closest('#btn-in') || target.closest('#btn-in-reg')) e.stopPropagation();
-    else if(target.closest('#modal-in')) modalIn.classList.add('displayNone');
+    if ((target.closest('.modal') && !target.closest('#btn-auth--in') && !target.closest('#btn-auth--reg')) || target.closest('#btn-auth--in') || target.closest('#btn-auth--reg')) e.stopPropagation();
+    else if(target.closest('#modal-in')) modalIn.classList.add('display--none');
 
-    if (target.closest('#btn-in')) {
+    if (target.closest('#btn-auth--in')) {
         if (!modalEmailIn.value) modalEmailIn.classList.add('error');
         else modalEmailIn.classList.remove('error');
         
         if (!modalPasswordlIn.value) modalPasswordlIn.classList.add('error');
         else modalPasswordlIn.classList.remove('error');
 
+        var requestAuth = function(response) {
+            response.text()
+                .then((res) => {
+                    if (res) {
+                        resp = JSON.parse(res);
+                        sessionStorage.setItem('id', resp.id);
+                        sessionStorage.setItem('email', resp.email);
+                        window.location.replace('/listBoard.html');
+                    } else {
+                        errLP.classList.remove('display--none');
+                    }
+                    modalEmailIn.value = '';
+                    modalPasswordlIn.value = '';
+                });
+        };
+
         if (modalEmailIn.value && modalPasswordlIn.value) {
-            modalEmailIn.value = '';
-            modalPasswordlIn.value = '';
-            modalIn.classList.add('displayNone');
-            // window.location.replace('/listBoard.html');
-            window.location.href = '/listBoard.html';
+            userRepository.getUserByEmail(modalEmailIn.value, requestAuth);
         }
     }
 
-    if (target.closest('#btn-in-reg')) {
-        modalIn.classList.add('displayNone');
-        modalReg.classList.remove('displayNone');
+    if (target.closest('#btn-auth--reg')) {
+        modalIn.classList.add('display--none');
+        modalReg.classList.remove('display--none');
     }
 });
 
@@ -101,7 +122,7 @@ modalReg.addEventListener('click', (e) => {
     e.preventDefault();
     const target = e.target;
     if ((target.closest('.modal') && !target.closest('#btn-reg')) || target.closest('#btn-reg')) e.stopPropagation();
-    else if(target.closest('#modal-reg')) modalReg.classList.add('displayNone');
+    else if(target.closest('#modal-reg')) modalReg.classList.add('display--none');
 
     if (target.closest('#btn-reg')) {
         let isValidEmail = REGEXP_EMAIL.test(modalEmailReg.value);
@@ -110,32 +131,44 @@ modalReg.addEventListener('click', (e) => {
 
         if (!isValidEmail) {
             modalEmailReg.classList.add('error');
-            errE.classList.remove('displayNone');
+            errE.classList.remove('display--none');
         } else {
             modalEmailReg.classList.remove('error');
-            errE.classList.add('displayNone');
+            errE.classList.add('display--none');
         }
         
         if (!isValidPassword) {
             modalPasswordReg.classList.add('error');
-            errP.classList.remove('displayNone');
+            errP.classList.remove('display--none');
         } else {
             modalPasswordReg.classList.remove('error');
-            errP.classList.add('displayNone');
+            errP.classList.add('display--none');
         }
         
         if (!isValidPasswordRepeat) {
             modalPasswordRegR.classList.add('error');
-            errPR.classList.remove('displayNone');
+            errPR.classList.remove('display--none');
         } else {
             modalPasswordRegR.classList.remove('error');
-            errPR.classList.add('displayNone');
+            errPR.classList.add('display--none');
         }
 
+        let resp;
+        var requestReg = function(response){
+            if (response.status >= 200 && response.status <= 299) {
+                response.text()
+                    .then((res) => {
+                        resp = JSON.parse(res);
+                        sessionStorage.setItem('id', resp.id);
+                        sessionStorage.setItem('email', resp.email);
+                        window.location.replace('/listBoard.html');
+                        // return resp.id;
+                    });
+            };
+        };
+
         if (isValidEmail && isValidPassword && isValidPasswordRepeat) {
-            userRepository.createUser(modalEmailReg.value,
-                                        modalPasswordReg.value,
-                                        ()=>{window.location.replace('./listBoard.html');})
+            userRepository.createUser(modalEmailReg.value, modalPasswordReg.value, requestReg);
         }
     }
 

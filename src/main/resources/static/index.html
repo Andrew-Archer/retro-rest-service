@@ -10,23 +10,22 @@
 </head>
 <body>
     <div class="main">
-        <div class="container">
-            <button class="btn in" id="in">Вход</button>
-            <button class="btn reg" id="reg">Регистрация</button>
+        <div class="container flex-direction--column">
+            <button class="btn btn--in" id="in">Вход</button>
+            <button class="btn btn--reg" id="reg">Регистрация</button>
         </div>
-        <div class="modal-content displayNone" id="modal-in">
+        <div class="modal-content display--none" id="modal-in">
             <div class="modal" id="modal1">
                 <div class="modal-container">
                     <div class="modal-header">
                         <h3>Войти</h3>
-                    </div>  
+                    </div>
+                    <span id="errorLP" class="display--none" style="font-size: 24px;color: red;">Неверный логин или пароль</span>
                     <div class="modal-body">
-                        <form action="/login" method="post">
-                            <input type="email" id="emailIn" placeholder="E-mail" name="username" class="form-input">
-                            <input type="password" id="passwordIn" placeholder="Пароль" name="password" class="form-input mb-112">
-                            <button class="btn in form-btn" id="btn-in" type="submit">Войти</button>
-                            <button class="btn reg form-btn" id="btn-in-reg">Регистрация</button>
-                        </form>
+                            <input type="email" id="emailIn" placeholder="E-mail" class="form-input">
+                            <input type="password" id="passwordIn" placeholder="Пароль" class="form-input mb-112">
+                            <button class="btn btn--in form-btn" id="btn-auth--in">Войти</button>
+                            <button class="btn btn--reg form-btn" id="btn-auth--reg">Регистрация</button>
                     </div>
                     <div class="modal-footer">
                         <span>Авторизация через сциальные сети</span>
@@ -57,7 +56,7 @@
             </div>
         </div>
 
-        <div class="modal-content displayNone" id="modal-reg">
+        <div class="modal-content display--none" id="modal-reg">
             <div class="modal">
                 <div class="modal-container">
                     <div class="modal-header">
@@ -65,13 +64,13 @@
                     </div>  
                     <div class="modal-body">
                         <form>
-                            <span id="errorE" class="displayNone" style="font-size: 12px;color: red;">Введите корректный email</span>
+                            <span id="errorE" class="display--none" style="font-size: 12px;color: red;">Введите корректный email</span>
                             <input type="email" id="emailReg" placeholder="E-mail" class="form-input">
-                            <span id="errorP" class="displayNone" style="font-size: 12px;color: red;">Пароли должен содержать [0..9][A-Z][a-z] и [хотя бы один спецсимвол, мин. длина 8 символов</span>
+                            <span id="errorP" class="display--none" style="font-size: 12px;color: red;">Пароли должен содержать [0..9][A-Z][a-z] и [хотя бы один спецсимвол, мин. длина 8 символов</span>
                             <input type="password" id="passwordReg" placeholder="Пароль" class="form-input">
-                            <span id="errorPR" class="displayNone" style="font-size: 12px;color: red;">Пароли не совпадают</span>
+                            <span id="errorPR" class="display--none" style="font-size: 12px;color: red;">Пароли не совпадают</span>
                             <input type="password" id="passwordRegRepeat" placeholder="Повторите пароль" class="form-input mb-83">
-                            <button class="btn in form-btn" id="btn-reg">Зарегистрироваться</button>
+                            <button class="btn btn--in form-btn" id="btn-reg">Зарегистрироваться</button>
                         </form>
                     </div>
                     <div class="modal-footer">
