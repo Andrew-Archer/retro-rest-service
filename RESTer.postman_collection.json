@@ -287,7 +287,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardId\":  \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"name\":     \"What went good\"\n}"
+									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"board\":  \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"name\":     \"What went good\"\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/api/boardColumn",
@@ -441,7 +441,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"id\":               \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardColumnId\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
+									"raw": "{\n    \"id\":               \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"boardColumn\":    \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"title\":            \"Some card content\",\n    \"likes\":            1\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/api/card",
@@ -617,7 +617,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"cardId\":   \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"content\":  \"Some card content\"\n}"
+									"raw": "{\n    \"id\":       \"00000000-6e9b-47f9-9906-f240bf8efbc3\",\n    \"card\":   \"96d0d457-6e9b-47f9-9906-f240bf8efbc3\",\n    \"content\":  \"Some card content\"\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/api/comment",
