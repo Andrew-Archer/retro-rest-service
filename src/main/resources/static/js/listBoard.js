@@ -364,7 +364,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
           };
   
           if (isVal) {
-            let date = formatDate(new Date());
+            let date = formatDate(new Date()).strFullDate;
             boardRepository.createBord(date, sessionStorage.getItem('id'), name.value, responseBoard);
           }
         }
