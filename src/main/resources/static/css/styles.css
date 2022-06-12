@@ -896,10 +896,20 @@ body, h3 {
     height: 2px;
 }
 
+.center-display {    
+    justify-content: center;
+    align-items: center;
+}
+
 .board-name-edit {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper__edit {
     display: flex;
 }
 

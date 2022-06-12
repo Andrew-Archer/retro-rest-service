@@ -1,4 +1,5 @@
-//JSON который получаем
+const REGEXP_NOT_EMPTY = /^\S{1,1}/;
+
 let xhr = new XMLHttpRequest();
 
 xhr.onload = function () {
@@ -7,6 +8,7 @@ xhr.onload = function () {
 
 var httpVerbs = {
   doPost(url, data, callback) {
+    console.log(url);
     return window.fetch(url, {
         method: "POST",
         headers: {
@@ -54,6 +56,14 @@ let boardRepository = {
   getBoardById(id, callback) {
     return httpVerbs.doGet("./api/board/"+id, callback);
   },
+  updateBoard(id, ownerId, name, callback) {
+    return httpVerbs.doPut('./api/board', {
+      "id": id,
+      "owner": ownerId,
+      "name": name
+    },
+    callback);
+  },
 };
 
 let columnRepository = {
@@ -71,20 +81,43 @@ let columnRepository = {
   updateColumn(id, boardId, name, callback) {
     return httpVerbs.doPut('./api/boardColumn', {
       "id": id,
-      "boardId": boardId,
+      "board": boardId,
       "name": name
     },
     callback);
   },
 };
 
-let cardRepository = {
-  createCard(boardId, nameCard, likes, callback) {
-    return httpVerbs.doPost("./api/boardColumn",
+let commentRepository = {
+  createCommit(idCard, comment, callback) {
+    return httpVerbs.doPost("./api/comment",
     {
-      "boardColumn": boardId,
-      "title": nameCard,
+      "card": idCard,
+      "content": comment
+    },
+    callback);
+  }
+}
+
+let cardRepository = {
+  createCard(columnId, title, likes, callback) {
+    return httpVerbs.doPost("./api/card",
+    {
+      "boardColumn": columnId,
+      "title": title,
       "likes": likes
+    },
+    callback);
+  },
+  deleteCard(id, callback) {
+    return httpVerbs.doDelete("./api/card/" + id, callback);
+  },
+  updateCard(id, columnId, title, like, callback) {
+    return httpVerbs.doPut('./api/card', {
+      "id": id,
+      "boardColumn": columnId,
+      "title": title,
+      "likes": like
     },
     callback);
   },
@@ -422,9 +455,12 @@ var Board = /** @class */ (function () {
       e.preventDefault();
       userRepository.getUserById(sessionStorage.getItem('id'), user);
     })
+    
+    let divEdit = createElementWithClasses('div', ['board-name-edit']);
+    title.appendChild(divEdit);
     let spanTitle = createElementWithClasses('h1', ['board__title']);
     spanTitle.textContent = this.name;
-    title.appendChild(spanTitle);
+    divEdit.appendChild(spanTitle);
     let userDiv = createElementWithClasses('div', ['user__wrapp']);
     let userSpan = createElementWithClasses('span', ['username']);
     userSpan.textContent = sessionStorage.getItem('email');
@@ -544,37 +580,46 @@ var Board = /** @class */ (function () {
       else i = 0;
     });
 
-    let divEdit = createElementWithClasses('div', ['board-name-edit']);
+    let divEditInp = createElementWithClasses('div', ['wrapper__edit']);
     let inputEdit = createElementWithClasses('input', ['input', 'inp-edit-title']);
-    divEdit.appendChild(inputEdit);
+    divEditInp.appendChild(inputEdit);
     let btnCancel = createElementWithClasses('button', ['btn-icon', 'btn-cancel']);
     btnCancel.textContent = 'X';
-    divEdit.appendChild(btnCancel);
+    divEditInp.appendChild(btnCancel);
     let btnDone = createElementWithClasses('button', ['btn-icon', 'btn-done']);
     btnDone.textContent = 'OK';
-    divEdit.appendChild(btnDone);
+    divEditInp.appendChild(btnDone);
+
+    let responseBoardUpdate = (response) => {
+      response.text()
+        .then((resp) => {
+          let board = JSON.parse(resp);
+          console.log(board);
+          spanTitle.textContent = board.name;
+        })
+    }
 
     spanTitle.addEventListener('click', (e) => {
       e.preventDefault();
-      title.removeChild(spanTitle);
-      title.appendChild(divEdit);
-      title.classList.add('edit');
+      divEdit.removeChild(spanTitle);
+      divEdit.appendChild(divEditInp);
+      divEdit.classList.add('edit');
       btnDone.addEventListener('click', (e) => {
         e.preventDefault();
         const inpValue = inputEdit.value;
-        if (inpValue) {
-          spanTitle.textContent = inpValue;
+        if (REGEXP_NOT_EMPTY.test(inpValue)) {
+          boardRepository.updateBoard(this.idBoard, sessionStorage.getItem('id'), inpValue, responseBoardUpdate);
         }
-        title.removeChild(divEdit);
-        title.appendChild(spanTitle);
-        title.classList.remove('edit');
+        divEdit.removeChild(divEditInp);
+        divEdit.appendChild(spanTitle);
+        divEdit.classList.remove('edit');
         inputEdit.value = '';
       });
       btnCancel.addEventListener('click', (e) => {
         e.preventDefault();
-        title.removeChild(divEdit);
-        title.appendChild(spanTitle);
-        title.classList.remove('edit');
+        divEdit.removeChild(divEditInp);
+        divEdit.appendChild(spanTitle);
+        divEdit.classList.remove('edit');
         inputEdit.value = '';
       })
     });
@@ -656,8 +701,8 @@ var Column = /** @class */ (function () {
     let responseColumnUpdate = (response) => {
       response.text()
         .then((resp) => {
-          console.log(resp);
-          nameSpan.textContent = inpValue;
+          let column = JSON.parse(resp);
+          nameSpan.textContent = column.name;
         });
     }
 
@@ -669,9 +714,8 @@ var Column = /** @class */ (function () {
       btnDone.addEventListener('click', (e) => {
         e.preventDefault();
         const inpValue = inputEdit.value;
-        const REGEXP_NOT_EMPTY = /^\S{1,1}/;
         if (REGEXP_NOT_EMPTY.test(inpValue)) {
-          // columnRepository.updateColumn(this.columnId, this.boardId, inpValue, responseColumnUpdate);
+          columnRepository.updateColumn(this.columnId, this.boardId, inpValue, responseColumnUpdate);
         }
         div80.removeChild(divEdit);
         div80.appendChild(nameSpan);
@@ -696,16 +740,17 @@ var Column = /** @class */ (function () {
     this.column.appendChild(cardsDiv);
 
     this.cards.forEach(card => {
-      let cardEl = new Card(card.title, cardsDiv, this.color, card.comment, card.like);
+      
+      let cardEl = new Card(card.title, cardsDiv, this.color, card.comments, card.likes, card.id, card.boardColumn);
       cardEl.createCard();
     });
 
     let responseCard = (response) => {
       response.text()
         .then((resp) => {
-          console.log(resp);
-          let card = new Card(resp.name, cardsDiv, this.color, []);
-          card.createCard();
+          let column = JSON.parse(resp);
+          let card = new Card(column.title, cardsDiv, this.color, column.comments, column.likes, column.id, this.columnId);
+          card.createCard();          
         });
     }
 
@@ -721,11 +766,13 @@ var Column = /** @class */ (function () {
 }());
 
 var Card = /** @class */ (function () {
-  function Card(title, parentEl, color, comment, like) {
+  function Card(title, parentEl, color, comment, like, id, columnId) {
     this.title = title;
     this.like = like;
     this.comment = comment;
     this.parentEl = parentEl;
+    this.id = id;
+    this.columnId = columnId;
     this.svgPathD = {
         delete: 'M12.5004 0.950113L7.55026 5.90022L2.60015 0.950113L0.950112 2.60015L5.90022 7.55026L0.950112 12.5004L2.60015 14.1504L7.55026 9.2003L12.5004 14.1504L14.1504 12.5004L9.2003 7.55026L14.1504 2.60015L12.5004 0.950113Z',
         like: 'M2 19L15.307 19C15.7139 18.9986 16.1108 18.8738 16.4452 18.6421C16.7796 18.4103 17.0359 18.0825 17.18 17.702L19.937 10.351C19.9789 10.2387 20.0002 10.1198 20 10L20 8C20 6.897 19.103 6 18 6L12.388 6L13.51 2.633C13.61 2.33236 13.6374 2.01229 13.5897 1.69905C13.5421 1.3858 13.4209 1.08832 13.236 0.830999C12.86 0.310999 12.254 0 11.612 0L10 0C9.703 0 9.422 0.132 9.231 0.360001L4.531 6H2C0.896997 6 -1.90735e-06 6.897 -1.90735e-06 8L-1.90735e-06 17C-1.90735e-06 18.103 0.896997 19 2 19ZM10.469 2L11.614 2L10.052 6.684C10.002 6.83425 9.98831 6.99424 10.0122 7.1508C10.0361 7.30735 10.0968 7.456 10.1894 7.5845C10.2819 7.713 10.4037 7.81767 10.5446 7.88991C10.6856 7.96215 10.8416 7.99988 11 8L18 8L18 9.819L15.307 17L6 17L6 7.362L10.469 2ZM4 8L4 17H2L1.999 8H4Z',
@@ -748,7 +795,7 @@ var Card = /** @class */ (function () {
     wrapCommentsDiv.appendChild(inpCommentDiv);
 
     this.comment.forEach((comment) => {
-      let newComment = new CommentItem(comment, wrapCommentsDiv);
+      let newComment = new CommentItem(comment.content, wrapCommentsDiv);
       newComment.createComment();
     });
 
@@ -771,9 +818,15 @@ var Card = /** @class */ (function () {
     let deleteSpan = createElementWithClasses('span', ['delete']);
     contentDiv.appendChild(deleteSpan);
 
+    let responseCardDel = (response) => {
+      response.text()
+        .then(() => {
+          this.parentEl.removeChild(this.card);
+        })
+    }
     deleteSpan.addEventListener('click', (e) => {
       e.preventDefault();
-      this.parentEl.removeChild(this.card);
+      cardRepository.deleteCard(this.id, responseCardDel)
     })
 
     let deleteSvg = createSvg(15, 15, '0 0 15 15', 'none', [this.svgPathD.delete], 'white');
@@ -808,13 +861,25 @@ var Card = /** @class */ (function () {
     cardTextCommentSpan.textContent = this.comment.length;
     feedbackDiv.appendChild(cardTextCommentSpan);
 
+    let responseComment = (response) => {
+      response.text()
+        .then((resp) => {
+          let comment = JSON.parse(resp);
+          console.log(comment);
+          let newComment = new CommentItem(comment.content, wrapCommentsDiv);
+          newComment.createComment();
+          comentTextarea.value = '';
+          cardTextCommentSpan.textContent++;
+        })
+    };
 
     commentBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      let newComment = new CommentItem(comentTextarea.value, wrapCommentsDiv);
-      newComment.createComment();
-      comentTextarea.value = '';
-      cardTextCommentSpan.textContent++;
+      console.log(this);
+      let comment = comentTextarea.value;
+      if (REGEXP_NOT_EMPTY.test(comment)) {
+        commentRepository.createCommit(this.id, comment, responseComment);
+      }
     });
 
     let editCardDiv = createElementWithClasses('div', ['card-edit']);
@@ -825,6 +890,22 @@ var Card = /** @class */ (function () {
     let btnDone = createElementWithClasses('button', ['card-btn-done']);
     btnDone.textContent = 'OK';
     editCardDiv.appendChild(btnDone);
+
+    let responseCardUpdate = (response) => {
+      response.text()
+        .then((resp) => {
+          let card = JSON.parse(resp);
+          console.log(card);
+          cardTextSpan.textContent = card.title;
+          cardTextLikeSpan.textContent = card.likes ? card.likes : 0;
+          cardTextCommentSpan.textContent = card.comments.length;
+        })
+    }
+
+    cardLikeSpan.addEventListener('click', (e) => {
+      e.preventDefault();
+      cardRepository.updateCard(this.id, this.columnId, this.title, ++this.like, responseCardUpdate);
+    })
 
     contentDiv.addEventListener('click', (e) => {
       e.preventDefault();
@@ -837,8 +918,8 @@ var Card = /** @class */ (function () {
       btnDone.addEventListener('click', (e) => {
         e.preventDefault();
         const editCardValue = editTextArea.value;
-        if (editCardValue) {
-          cardTextSpan.textContent = editCardValue;
+        if (REGEXP_NOT_EMPTY.test(editCardValue)) {
+          cardRepository.updateCard(this.id, this.columnId, editCardValue, this.like, responseCardUpdate);
         }
         wrapperCardDiv.removeChild(editCardDiv);
         wrapperCardDiv.appendChild(contentDiv);
