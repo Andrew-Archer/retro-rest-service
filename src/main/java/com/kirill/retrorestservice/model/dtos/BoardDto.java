@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toList;
 @Builder
 public class BoardDto {
     private UUID id;
+    private Date endsOn;
     private Date creationDate;
     private String name;
     private List<BoardColumnDto> columns;
@@ -22,6 +23,7 @@ public class BoardDto {
         return BoardDto.builder()
                 .id(board.getId())
                 .owner(board.getOwner().getId())
+                .endsOn(board.getEndsOn())
                 .creationDate(board.getCreationDate())
                 .name(board.getName())
                 .columns(BoardColumnDto.toDtos(board.getColumns()))

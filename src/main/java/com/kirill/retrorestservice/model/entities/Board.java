@@ -30,6 +30,10 @@ public class Board {
     @Column(name = "CREATION_DATE", nullable = false)
     private Date creationDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATION_DATE")
+    private Date endsOn;
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -68,6 +72,14 @@ public class Board {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Date getEndsOn() {
+        return endsOn;
+    }
+
+    public void setEndsOn(Date endsOn) {
+        this.endsOn = endsOn;
     }
 
 
