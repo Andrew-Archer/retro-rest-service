@@ -31,7 +31,7 @@ public class Board {
     private Date creationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATION_DATE")
+    @Column(name = "ENDS_ON")
     private Date endsOn;
 
     public Date getCreationDate() {
