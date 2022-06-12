@@ -6,5 +6,6 @@ Action order for running this application:
 * To stop the app just close the console or press `ctrl+c`
 * Now all api is accessible with `http://localhost:8080/api/**`
 * Import postman project from root of project folder `RESTer.postman_collection.json`
-
+* The default user on the firs start of app is `admin@admin.com` with pass `admin`
+* To configure DB connection set `RETRO_DB_URL`, `RETRO_DB_USER`, `RETRO_DB_PASS`
 To update project after author's fix use git.
