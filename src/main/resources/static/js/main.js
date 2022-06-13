@@ -38,6 +38,9 @@ let userRepository = {
     getUserById(id, callback){
         return httpVerbs.doGet("./api/user/" + id, callback);
     },
+    getUserAuth(callback){
+        return httpVerbs.doGet("./api/user/auth", callback);
+    },
     getUserAll(callback){
         return httpVerbs.doGet("./api/user", callback);
     },
@@ -45,6 +48,20 @@ let userRepository = {
         return httpVerbs.doGet("./api/user/" + name, callback)
     }
 };
+
+let responseUserAuth = (response) => {
+    response.text()
+        .then((resp) => {
+            if (resp) {
+                let userAuth = JSON.parse(resp);
+                sessionStorage.setItem('id', userAuth.id);
+                sessionStorage.setItem('email', userAuth.email);
+                window.location.replace('/listBoard.html');
+            }
+        })
+};
+
+userRepository.getUserAuth(responseUserAuth);
 
 var openModal = function(modal) {
     return function() {
