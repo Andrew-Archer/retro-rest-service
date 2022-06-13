@@ -1,5 +1,6 @@
 package com.kirill.retrorestservice.services;
 
+import com.kirill.retrorestservice.configurations.security.Provider;
 import com.kirill.retrorestservice.model.entities.User;
 import com.kirill.retrorestservice.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findById(UUID id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElse(null);
     }
 
     @Transactional(readOnly = true)
@@ -50,5 +51,19 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    public void processOAuthPostLogin(String username) {
+        User existUser = userRepository.getByEmail(username);
+
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setEmail(username);
+            newUser.setProvider(Provider.GOOGLE);
+
+            userRepository.save(newUser);
+        }
+
     }
 }

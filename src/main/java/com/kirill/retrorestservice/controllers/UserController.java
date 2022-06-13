@@ -1,10 +1,12 @@
 package com.kirill.retrorestservice.controllers;
 
-import com.kirill.retrorestservice.model.entities.User;
 import com.kirill.retrorestservice.model.dtos.UserDto;
+import com.kirill.retrorestservice.model.entities.User;
 import com.kirill.retrorestservice.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,16 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/auth")
+    public ResponseEntity<UserDto> user(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal != null) {
+            var authenticatedUser = userService.findByEmail(principal.getAttribute("email"));
+            return ResponseEntity.ok(UserDto.toDto(authenticatedUser));
+        }else{
+            return ResponseEntity.ok(null);
+        }
     }
 
     @GetMapping("/{id}")

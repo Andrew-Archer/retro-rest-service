@@ -7,6 +7,7 @@
 CREATE TABLE public.user_ (
 	id uuid NOT NULL,
 	email varchar(255) NULL,
+	provider varchar(64) NULL,
 	password_ varchar(255) NULL,
 	CONSTRAINT idx_user__on_email UNIQUE (email),
 	CONSTRAINT user__pkey PRIMARY KEY (id)

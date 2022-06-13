@@ -1,5 +1,7 @@
 package com.kirill.retrorestservice.model.entities;
 
+import com.kirill.retrorestservice.configurations.security.Provider;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +16,10 @@ public class User {
     @Column(name = "ID", nullable = false)
     @GeneratedValue
     private UUID id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="PROVIDER")
+    private Provider provider;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Board> boards;
@@ -54,5 +60,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }
