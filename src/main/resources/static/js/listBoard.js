@@ -30,6 +30,8 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         .then(callback);
     },
     doPut(url, data, callback) {
+      console.log(url);
+      console.log('data', data);
       return window.fetch(url, {
         method: "PUT",
         headers: {
@@ -65,18 +67,25 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       return httpVerbs.doDelete("./api/board/" + id, callback);
     },
     getBoardById(id, callback) {
-      console.log(id);
       return httpVerbs.doGet("./api/board/"+id, callback);
     },
-    updateBoard(id, ownerId, name, callback) {
+    updateBoard(id, ownerId, name, time, callback) {
+      console.log('time', time);
       return httpVerbs.doPut('./api/board', {
         "id": id,
         "owner": ownerId,
-        "name": name
+        "name": name,
+        "endsOn": time
       },
       callback);
     },
   };
+
+  let logOutRepository = {
+    logOut(callback) {
+      return httpVerbs.doGet('./logout', callback);
+    }
+  }
   
   let columnRepository = {
     createColumn(boardId, nameColumn, callback) {
@@ -203,7 +212,10 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     },
     gerUserByName(name, callback) {
       return httpVerbs.doGet("./api/user/" + name, callback)
-    }
+    },    
+    gerUserGetFile(id, callback) {
+      return httpVerbs.doGet("./api/report/getFile/" + id, callback);
+    },
   };
   
   //Парсинг JSON, здесь нужно будет уточнить, как собираешься с сервера принимать запрос fetch, XMLHttpRequest и т.п.
@@ -228,9 +240,16 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     .then((res) => {
       if (res) {
         board = JSON.parse(res);
-        const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id);
+        const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.endsOn);
         boardNew.createBoard();
         name.value = '';
+        console.log(board.endsOn);
+        if (board.endsOn) {
+          let date = new Date(board.endsOn).getTime();
+          let end = new Date(date - Date.now());
+          timerBox = createTimer(end.getMinutes(), end.getSeconds());
+          header.appendChild(timerBox);
+        }
       } else {
         window.location.replace("./listBoard.html");
       }
@@ -256,6 +275,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       this.svgPathD = {
         addBoard1: 'M2 63.3333V9.66667C2 7.63334 2.80774 5.68329 4.24551 4.24551C5.68329 2.80774 7.63334 2 9.66667 2H71C73.0333 2 74.9834 2.80774 76.4211 4.24551C77.8589 5.68329 78.6667 7.63334 78.6667 9.66667V63.3333C78.6667 65.3667 77.8589 67.3167 76.4211 68.7545C74.9834 70.1923 73.0333 71 71 71H9.66667C7.63334 71 5.68329 70.1923 4.24551 68.7545C2.80774 67.3167 2 65.3667 2 63.3333Z',
         addBoard2: 'M40.3333 44.1667V55.6667M2 17.3333H78.6667H2ZM28.8333 44.1667H40.3333H28.8333ZM51.8333 44.1667H40.3333H51.8333ZM40.3333 44.1667V32.6667V44.1667Z',
+        save: 'M5.91071 16.9107H21.0893M5.91071 20.2857H21.0893M5.91071 23.6607H21.0893M16.625 6.30357V6.30357C15.8853 6.30357 15.2857 6.90319 15.2857 7.64286V9.78571C15.2857 10.5254 15.8853 11.125 16.625 11.125V11.125C17.3647 11.125 17.9643 10.5254 17.9643 9.78571V7.64286C17.9643 6.90319 17.3647 6.30357 16.625 6.30357V6.30357ZM9.25 13.5357H17.75C18.8546 13.5357 19.75 12.6403 19.75 11.5357V5.89286C19.75 4.78829 18.8546 3.89286 17.75 3.89286H9.25C8.14543 3.89286 7.25 4.78829 7.25 5.89286V11.5357C7.25 12.6403 8.14543 13.5357 9.25 13.5357ZM26 26V7.08731C26 6.58347 25.8098 6.09819 25.4675 5.7285L21.683 1.64118C21.3045 1.23239 20.7726 1 20.2155 1H3C1.89543 1 1 1.89543 1 3V26C1 27.1046 1.89543 28 3 28H24C25.1046 28 26 27.1046 26 26Z',
       };
   
       this.main.appendChild(this.newBoard);
@@ -268,15 +288,35 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       this.parentEl.appendChild(title);
       this.parentEl.appendChild(this.main);
       let userDiv = createElementWithClasses('div', ['user__wrapp', 'direction-row']);
+      let wrapp__user = createElementWithClasses('div', ['wrapp__user']);
+      userDiv.appendChild(wrapp__user);
       let userSpan = createElementWithClasses('span', ['username', 'font-size--24']);
       userSpan.textContent = sessionStorage.getItem('email');
-      userDiv.appendChild(userSpan);
+      wrapp__user.appendChild(userSpan);
+
+      let btnSave = createElementWithClasses('button', ['btn', 'btn--save']);
+      wrapp__user.appendChild(btnSave);
+      
+      let titleSaveSpan = createElementWithClasses('span', ['title']);
+      titleSaveSpan.textContent = 'Сохранить';
+      btnSave.appendChild(titleSaveSpan);
+
+      let responseUserFile = (response) => {
+        location.href = response.url;
+      }
+
+      btnSave.addEventListener('click', (e) => {
+        e.preventDefault();
+        userRepository.gerUserGetFile(sessionStorage.getItem("id"), responseUserFile);
+      });
+
       let btnLogOut = createElementWithClasses('a', ['logout', 'font-size--24', 'margin-top--0']);
       btnLogOut.setAttribute('href', 'index.html');
       btnLogOut.textContent = 'Выход';
       btnLogOut.addEventListener('click', (e) => {
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('email');
+        logOutRepository.logOut();
       });
       userDiv.appendChild(btnLogOut);
       title.appendChild(userDiv);
@@ -339,9 +379,16 @@ if (!sessionStorage.getItem('id') && !location.hash) {
             response.text()
             .then((res) => {
               board = JSON.parse(res);
-              const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id);
+              const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.endsOn);
               boardNew.createBoard();
               name.value = '';
+              console.log(board.endsOn);
+              if (board.endsOn) {
+                let date = new Date(board.endsOn).getTime();
+                let end = new Date(date - Date.now());
+                timerBox = createTimer(end.getMinutes(), end.getSeconds());
+                header.appendChild(timerBox);
+              }
             })
           }
   
@@ -454,7 +501,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   
       this.cardBoardDiv.addEventListener('click', (e) => {
         e.preventDefault();
-        if (!e.target.closest('.card-board-delete')) {
+        if (!e.target.closest('.card-board-delete') || !e.target.closest('.card-board-save')) {
           location.hash += this.idBoard;
           const board = new Board(this.name, this.columns, this.date, this.parentEl, this.idBoard);
           board.createBoard();
@@ -466,11 +513,12 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   }());
   
   var Board = /** @class */ (function () {
-    function Board(name, columns, date, parentEl, idBoard) {
+    function Board(name, columns, date, parentEl, idBoard, time) {
       this.name = name;
       this.columns = columns;
       this.idBoard = idBoard;
       this.date = date;
+      this.time = time;
       this.svgPathD = {
         add: 'M18 15L15 12M13 5H1H13ZM9 9H1H9ZM5 13H1H5ZM17 1H1H17ZM18 5V15V5ZM18 15L21 12L18 15Z',
         time1: 'M17 2.5L15 1M15 12H10V7L15 12ZM3 2.5L5 1L3 2.5Z',
@@ -515,6 +563,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       btnLogOut.addEventListener('click', (e) => {
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('email');
+        logOutRepository.logOut();
       });
       
       if (sessionStorage.getItem('id')) {
@@ -580,6 +629,22 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       let inpValue = modalObj.input;
       let body = document.querySelector('body');
       body.appendChild(modal);
+
+      
+      let responseBoardUpdate = (response) => {
+        response.text()
+          .then((resp) => {
+            let board = JSON.parse(resp);
+            spanTitle.textContent = board.name;
+            if (board.endsOn) {
+              let date = new Date(board.endsOn).getTime();
+              let end = new Date(date - Date.now());
+              timerBox = createTimer(end.getMinutes(), end.getSeconds());
+              header.appendChild(timerBox);
+            }
+            isPause = true;
+          })
+      }
   
       btnTimeButton.addEventListener('click', function (e) {
         e.preventDefault();
@@ -589,6 +654,8 @@ if (!sessionStorage.getItem('id') && !location.hash) {
           modal.classList.remove('display--none');
         }
       });
+
+      let idBoard = this.idBoard;
   
       let timerBox;
       modal.addEventListener('click', function (e) {
@@ -602,8 +669,11 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         if (target.closest('.ok-timer')) {
           isPause = true;
           if (timerBox) header.removeChild(timerBox);
-          timerBox = createTimer(inpValue.value);
-          header.appendChild(timerBox);
+          let currentDate = Date.now();
+          let time = Number(inpValue.value);
+          let endsOn = currentDate + time * 60 * 1000;
+          time = formatDate(new Date(endsOn)).strFullDate;
+          boardRepository.updateBoard(idBoard, sessionStorage.getItem('id'), spanTitle.textContent, time, responseBoardUpdate);
         }
       });
   
@@ -646,15 +716,6 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       btnDone.textContent = 'OK';
       divEditInp.appendChild(btnDone);
   
-      let responseBoardUpdate = (response) => {
-        response.text()
-          .then((resp) => {
-            let board = JSON.parse(resp);
-            spanTitle.textContent = board.name;
-            isPause = true;
-          })
-      }
-  
       if (sessionStorage.getItem('id')) {
         spanTitle.addEventListener('click', (e) => {
           e.preventDefault();
@@ -666,7 +727,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
             e.preventDefault();
             const inpValue = inputEdit.value;
             if (REGEXP_NOT_EMPTY.test(inpValue)) {
-              boardRepository.updateBoard(this.idBoard, sessionStorage.getItem('id'), inpValue, responseBoardUpdate);
+              boardRepository.updateBoard(this.idBoard, sessionStorage.getItem('id'), inpValue, this.time, responseBoardUpdate);
             }
             divEdit.removeChild(divEditInp);
             divEdit.appendChild(spanTitle);
@@ -1110,9 +1171,9 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     return {strFullDate, strDate};
   }
   
-  function createTimer(minutes) {
+  function createTimer(minutes, seconds) {
     const timerBox = document.createElement('div');
-    let times = [minutes, 00];
+    let times = [minutes, seconds];
   
     const timer = times => {
       let tm = setInterval(() => {
@@ -1202,6 +1263,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     containerCountDiv.appendChild(countLabel);
     const countInput = createElementWithClasses('input', ['count-input', 'modal-input-board']);
     countInput.setAttribute('id', 'newBoardCount');
+    countInput.setAttribute('disabled', 'disabled');
     containerCountDiv.appendChild(countInput);
   
     const label = createElementWithClasses('label', ['modal-label-board']);
