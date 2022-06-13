@@ -81,6 +81,26 @@ body, h3 {
     background: #ebebeb;
 }
 
+.btn--save {
+    font-size: 18px;
+    line-height: 30px;
+
+    margin-left: 10px;
+
+    background: #208EED;
+    color: #FFFFFF;
+}
+
+.btn--save:hover {
+    background: #1a74c4;
+}
+
+.wrapp__user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .modal-content {
     position: absolute;
     top: 0;
@@ -673,8 +693,16 @@ body, h3 {
     height: 100%;
 }
 
+.container-board-btn {
+    display: flex;
+}
+
 .card-board-delete:hover svg path {
     stroke: #e24515;
+}
+
+.card-board-save:hover svg path {
+    stroke: #009886;
 }
 
 .card-board-item {
