@@ -15,7 +15,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     if (isPause && location.hash) {
       location.reload();
     };
-  }, 5000);
+  }, 10000);
   
   var httpVerbs = {
     doPost(url, data, callback) {
