@@ -21,8 +21,8 @@ CREATE TABLE public.user_ (
 CREATE TABLE public.board (
 	id uuid NOT NULL,
 	name_ varchar(255) NOT NULL,
-	creation_Date date not null,
-	ends_on date,
+	creation_Date timestamp not null,
+	ends_on timestamp,
 	owner_id uuid NOT NULL,
 	CONSTRAINT board_pkey PRIMARY KEY (id)
 );
