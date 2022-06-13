@@ -96,7 +96,7 @@ btnIn.addEventListener('click', openModal(modalIn));
 btnReg.addEventListener('click', openModal(modalReg));
 
 modalIn.addEventListener('click', (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     const target = e.target;
     if ((target.closest('.modal') && !target.closest('#btn-auth--in') && !target.closest('#btn-auth--reg')) || target.closest('#btn-auth--in') || target.closest('#btn-auth--reg')) e.stopPropagation();
     else if(target.closest('#modal-in')) modalIn.classList.add('display--none');
@@ -136,7 +136,7 @@ modalIn.addEventListener('click', (e) => {
 });
 
 modalReg.addEventListener('click', (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     const target = e.target;
     if ((target.closest('.modal') && !target.closest('#btn-reg')) || target.closest('#btn-reg')) e.stopPropagation();
     else if(target.closest('#modal-reg')) modalReg.classList.add('display--none');
