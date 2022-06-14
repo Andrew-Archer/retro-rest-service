@@ -14,7 +14,7 @@
     <name>retro-rest-service</name>
     <description>Simple REST API service for taking retro</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
     </properties>
     <dependencies>
         <dependency>
