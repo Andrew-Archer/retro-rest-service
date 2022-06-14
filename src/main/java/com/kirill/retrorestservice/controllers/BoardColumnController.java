@@ -55,7 +55,7 @@ public class BoardColumnController {
     }
 
     private BoardColumn toEntity(BoardColumnDto boardColumnDto){
-        var boardColumn = new BoardColumn();
+        BoardColumn boardColumn = new BoardColumn();
         boardColumn.setId(boardColumnDto.getId());
         boardColumn.setBoard(boardService.findById(boardColumnDto.getBoard()));
         boardColumn.setName(boardColumnDto.getName());

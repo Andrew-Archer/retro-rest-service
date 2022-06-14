@@ -36,7 +36,7 @@ public class BoardService {
 
     @Transactional
     public Board update(Board board) {
-        var previousBoardState = boardRepository.findById(board.getId()).orElse(null);
+        Board previousBoardState = boardRepository.findById(board.getId()).orElse(null);
         if (previousBoardState != null) {
             board.setCreationDate(previousBoardState.getCreationDate());
         }

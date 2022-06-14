@@ -25,7 +25,7 @@ public class ReportController {
 
     @GetMapping(value = "/getFile/{userId}", produces = MediaType.MULTIPART_MIXED_VALUE)
     public @ResponseBody byte[] getFile(@PathVariable UUID userId, HttpServletResponse response) {
-        var user = userService.findById(userId);
+        User user = userService.findById(userId);
         response.setHeader("Content-Disposition", "attachment; filename=" + "Wow.csv");
         return buildCsvContent(getTopTenCards(user), user).getBytes(StandardCharsets.UTF_8);
     }

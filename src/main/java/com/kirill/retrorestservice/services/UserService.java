@@ -54,8 +54,8 @@ public class UserService {
 
     @Transactional
     public void processOAuthPostLogin(CustomOAuth2User customOAuth2User) {
-        var email = customOAuth2User.getEmail();
-        var existUser = userRepository.getByEmail(email);
+        String email = customOAuth2User.getEmail();
+        User existUser = userRepository.getByEmail(email);
 
         if (existUser == null) {
             User newUser = new User();

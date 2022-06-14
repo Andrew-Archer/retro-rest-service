@@ -51,7 +51,7 @@ public class CommentController {
     }
 
     private Comment toEntity(CommentDto commentDto) {
-        var comment = new Comment();
+        Comment comment = new Comment();
         comment.setId(commentDto.getId());
         comment.setContent(commentDto.getContent());
         comment.setCard(cardService.findById(commentDto.getCard()));

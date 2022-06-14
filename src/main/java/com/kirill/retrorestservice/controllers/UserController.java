@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/auth")
     public ResponseEntity<UserDto> user(@AuthenticationPrincipal OAuth2User principal) {
         if (principal != null) {
-            var authenticatedUser = userService.findByEmail(principal.getAttribute("email"));
+            User authenticatedUser = userService.findByEmail(principal.getAttribute("email"));
             return ResponseEntity.ok(UserDto.toDto(authenticatedUser));
         }else{
             return ResponseEntity.ok(null);
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     private User toEntity(UserDto userDto) {
-        var user = new User();
+        User user = new User();
         user.setId(userDto.getId());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());

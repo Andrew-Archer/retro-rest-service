@@ -51,7 +51,7 @@ public class BoardController {
     }
 
     private Board toEntity(BoardDto boardDto){
-        var board = new Board();
+        Board board = new Board();
         board.setId(boardDto.getId());
         board.setEndsOn(boardDto.getEndsOn());
         board.setCreationDate(boardDto.getCreationDate());

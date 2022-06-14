@@ -51,7 +51,7 @@ public class CardController {
     }
 
     private Card toEntity(CardDto cardDto){
-        var card = new Card();
+        Card card = new Card();
         card.setId(cardDto.getId());
         card.setBoardColumn(boardColumnService.findById(cardDto.getBoardColumn()));
         card.setTitle(cardDto.getTitle());
