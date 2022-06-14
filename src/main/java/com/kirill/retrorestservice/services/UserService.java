@@ -5,6 +5,7 @@ import com.kirill.retrorestservice.configurations.security.Provider;
 import com.kirill.retrorestservice.model.entities.User;
 import com.kirill.retrorestservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,14 +54,14 @@ public class UserService {
     }
 
     @Transactional
-    public void processOAuthPostLogin(CustomOAuth2User customOAuth2User) {
+    public void processOAuthPostLogin(DefaultOidcUser customOAuth2User) {
         String email = customOAuth2User.getEmail();
         User existUser = userRepository.getByEmail(email);
 
         if (existUser == null) {
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setProvider(Provider.valueOf(customOAuth2User.getProviderName()));
+            newUser.setProvider(Provider.GOOGLE);
 
             userRepository.save(newUser);
         }

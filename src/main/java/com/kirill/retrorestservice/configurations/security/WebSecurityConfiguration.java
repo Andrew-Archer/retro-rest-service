@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.RestController;
 
 @EnableWebSecurity
@@ -65,7 +66,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .userService(oAuth2UserService)
                 .and()
                 .successHandler((request, response, authentication) -> {
-                    userService.processOAuthPostLogin((CustomOAuth2User) authentication.getPrincipal());
+                    userService.processOAuthPostLogin((DefaultOidcUser) authentication.getPrincipal());
                     response.sendRedirect(LOGIN_PAGE_URL);
                 });
     }
