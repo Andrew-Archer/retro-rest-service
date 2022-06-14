@@ -4,8 +4,6 @@ RUN addgroup -S spring && adduser -S spring -G spring
 # Switching user
 USER spring:spring
 # Set path to our app jar files
-ARG JAR_FILE=target/*.jar
-# App axecuteables into image
-COPY ${JAR_FILE} app.jar
+COPY target/*.jar app.jar
 # Run our app
 ENTRYPOINT ["java","-jar","/app.jar"]
