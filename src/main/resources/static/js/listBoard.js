@@ -19,7 +19,6 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   
   var httpVerbs = {
     doPost(url, data, callback) {
-      console.log(url);
       return window.fetch(url, {
           method: "POST",
           headers: {
@@ -424,7 +423,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   let CardBoard = /** @class */ (function () {
     function CardBoard(name, columns, date, parentEl, id) {
       this.name = name;
-      this.countCard = columns.length;
+      this.countCard = 0;
       this.columns = columns;
       this.date = date.split('+')[0];
       this.parentEl = parentEl;
@@ -439,6 +438,10 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       this.cardBoardDiv = createElementWithClasses('div', ['card-board']);
   
       this.parentEl.appendChild(this.cardBoardDiv);
+
+      columns.forEach((column) => {
+        this.countCard += column.cards.length;
+      });
     };
   
     CardBoard.prototype.createCardBoard = function () {
