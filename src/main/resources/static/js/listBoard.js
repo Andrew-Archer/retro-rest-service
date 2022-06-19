@@ -29,8 +29,6 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         .then(callback);
     },
     doPut(url, data, callback) {
-      console.log(url);
-      console.log('data', data);
       return window.fetch(url, {
         method: "PUT",
         headers: {
@@ -53,12 +51,13 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   };
   
   let boardRepository = {
-    createBord(date, userId, nameBoard, callback) {
+    createBord(date, userId, nameBoard, maxLike, callback) {
       return httpVerbs.doPost("./api/board",
       {
         "creationDate": date,
         "owner": userId,
-        "name": nameBoard
+        "name": nameBoard,
+        "maxLikesPerUser": maxLike ? maxLike : 0,
       },
       callback);
     },
@@ -69,7 +68,6 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       return httpVerbs.doGet("./api/board/"+id, callback);
     },
     updateBoard(id, ownerId, name, time, callback) {
-      console.log('time', time);
       return httpVerbs.doPut('./api/board', {
         "id": id,
         "owner": ownerId,
@@ -239,10 +237,9 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     .then((res) => {
       if (res) {
         board = JSON.parse(res);
-        const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.endsOn);
+        const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.maxLikesPerUser, board.endsOn);
         boardNew.createBoard();
         name.value = '';
-        console.log(board.endsOn);
         if (board.endsOn) {
           let date = new Date(board.endsOn).getTime();
           let end = new Date(date - Date.now());
@@ -332,7 +329,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
 
       if (this.listBoards !== undefined) {
         this.listBoards.forEach((board) => {
-                let cardBoard = new CardBoard(board.name, board.columns, board.creationDate, this.contentCards, board.id);
+                let cardBoard = new CardBoard(board.name, board.columns, board.creationDate, this.contentCards, board.id, board.maxLikesPerUser);
                 cardBoard.createCardBoard();
               });
       }
@@ -358,13 +355,13 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         if (target.closest('.ok')) {
           const listColumns = document.querySelectorAll('.inputNewColumn');
           const name = document.querySelector('.name-input');
+          const maxLike = document.querySelector('.count-input');
           let isVal = true;
           if (name.value) name.classList.remove('error');
           else {
             isVal = false;
             name.classList.add('error');
           }
-          let i = 1;
           listColumns.forEach((column) => {
             arrColumns.push(column.value);
             if (column.value == '') {
@@ -373,17 +370,16 @@ if (!sessionStorage.getItem('id') && !location.hash) {
             } else {
               column.classList.remove('error');
             }
-            i++;
           });
   
           let responseBoardById = function(response) {
             response.text()
             .then((res) => {
               board = JSON.parse(res);
-              const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.endsOn);
+              const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.maxLikesPerUser, board.endsOn);
+              sessionStorage.setItem('maxLike', board.maxLikesPerUser);
               boardNew.createBoard();
               name.value = '';
-              console.log(board.endsOn);
               if (board.endsOn) {
                 let date = new Date(board.endsOn).getTime();
                 let end = new Date(date - Date.now());
@@ -413,7 +409,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   
           if (isVal) {
             let date = formatDate(new Date()).strFullDate;
-            boardRepository.createBord(date, sessionStorage.getItem('id'), name.value, responseBoard);
+            boardRepository.createBord(date, sessionStorage.getItem('id'), name.value, maxLike.value, responseBoard);
           }
         }
       });
@@ -423,10 +419,11 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   }());
   
   let CardBoard = /** @class */ (function () {
-    function CardBoard(name, columns, date, parentEl, id) {
+    function CardBoard(name, columns, date, parentEl, id, maxLike) {
       this.name = name;
       this.countCard = 0;
       this.columns = columns;
+      this.maxLike = maxLike;
       this.date = date.split('+')[0];
       this.parentEl = parentEl;
       this.idBoard = id;
@@ -506,9 +503,10 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   
       this.cardBoardDiv.addEventListener('click', (e) => {
         e.preventDefault();
-        if (!e.target.closest('.card-board-delete') || !e.target.closest('.card-board-save')) {
+        if (!e.target.closest('.card-board-delete')) {
           location.hash += this.idBoard;
-          const board = new Board(this.name, this.columns, this.date, this.parentEl, this.idBoard);
+          const board = new Board(this.name, this.columns, this.date, this.parentEl, this.idBoard, this.maxLike);
+          sessionStorage.setItem('maxLike', this.maxLike);
           board.createBoard();
         }
       })
@@ -518,11 +516,12 @@ if (!sessionStorage.getItem('id') && !location.hash) {
   }());
   
   var Board = /** @class */ (function () {
-    function Board(name, columns, date, parentEl, idBoard, time) {
+    function Board(name, columns, date, parentEl, idBoard, maxLike, time) {
       this.name = name;
       this.columns = columns;
       this.idBoard = idBoard;
       this.date = date;
+      this.maxLike = maxLike;
       this.time = time;
       this.svgPathD = {
         add: 'M18 15L15 12M13 5H1H13ZM9 9H1H9ZM5 13H1H5ZM17 1H1H17ZM18 5V15V5ZM18 15L21 12L18 15Z',
@@ -551,6 +550,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         e.preventDefault();
         location.hash = '';
         userRepository.getUserById(sessionStorage.getItem('id'), user);
+        sessionStorage.removeItem('maxLike');
       })
       
       let divEdit = createElementWithClasses('div', ['board-name-edit']);
@@ -586,6 +586,18 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       if (sessionStorage.getItem("id")) {
         header.appendChild(dropdownDiv);
       }
+
+      let maxLikeDiv = createElementWithClasses('div', ['wrapper__max-like']);
+      header.appendChild(maxLikeDiv);
+
+      let spanText = createElementWithClasses('span', ['max-like__text']);
+      spanText.textContent = 'Количество лайков: ';
+      maxLikeDiv.appendChild(spanText);
+
+      let spanCount = createElementWithClasses('span', ['max-like__count']);
+      spanCount.setAttribute('id', 'count-like');
+      spanCount.textContent = sessionStorage.getItem('maxLike');
+      maxLikeDiv.appendChild(spanCount);
   
       let btnAddButton = createElementWithClasses('button', ['btn', 'btn-add', 'padding-0']);
       dropdownDiv.appendChild(btnAddButton);
@@ -1027,7 +1039,6 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         response.text()
           .then((resp) => {
             let card = JSON.parse(resp);
-            console.log(card);
             cardTextSpan.textContent = card.title;
             this.title = card.title;
             cardTextLikeSpan.textContent = card.likes ? card.likes : 0;
@@ -1036,8 +1047,13 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       }
   
       cardLikeSpan.addEventListener('click', (e) => {
+        let countLike = document.querySelector('#count-like');
         e.preventDefault();
-        cardRepository.updateCard(this.id, this.columnId, this.title, ++this.like, responseCardUpdate);
+        if (+sessionStorage.getItem('maxLike') > 0) {
+          cardRepository.updateCard(this.id, this.columnId, this.title, ++this.like, responseCardUpdate);
+          sessionStorage.setItem('maxLike', +sessionStorage.getItem('maxLike') - 1);
+          countLike.textContent = sessionStorage.getItem('maxLike');
+        }
       })
   
       contentDiv.addEventListener('click', (e) => {
@@ -1268,7 +1284,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     containerCountDiv.appendChild(countLabel);
     const countInput = createElementWithClasses('input', ['count-input', 'modal-input-board']);
     countInput.setAttribute('id', 'newBoardCount');
-    countInput.setAttribute('disabled', 'disabled');
+    countInput.setAttribute('type', 'number');
     containerCountDiv.appendChild(countInput);
   
     const label = createElementWithClasses('label', ['modal-label-board']);
