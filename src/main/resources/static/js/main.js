@@ -1,9 +1,9 @@
 
 var httpVerbs = {
     doPost(url, data, callback) {
-            return window.fetch(url, {method: "POST",
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify(data)})
+            return window.fetch(url, {"method": "POST",
+                            "headers": {"Content-Type": "application/json"},
+                            "body": JSON.stringify(data)})
                             .then(callback);
         },
     doPut(){
@@ -19,14 +19,8 @@ let userRepository = {
     createUser(email, password, callback){
         return httpVerbs.doPost("./api/user",
         {
-            "id": null,
-            "boards": [],
-            "username": "",
             "password": password,
-            "firstName": "",
-            "lastName": "",
-            "email": email,
-            "active": true
+            "email": email
         },
         callback);
     },

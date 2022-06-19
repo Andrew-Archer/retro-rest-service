@@ -49,6 +49,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/error**",
                         "/api/user/auth",
                         LOGIN_PAGE_URL,
+                        "/api/user",
                         "/css/**",
                         "/js/**",
                         "/images/**",
