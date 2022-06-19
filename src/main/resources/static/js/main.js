@@ -38,6 +38,13 @@ let userRepository = {
     getUserById(id, callback){
         return httpVerbs.doGet("./api/user/" + id, callback);
     },
+    getOAuthUser(id, pass, callback){
+        return window.fetch("./api/user/email/", {
+        "headers": {
+                "Authorization": "Basic " + btoa(id + ":" + pass),
+            },
+        "method": "GET"}).then(callback);
+    },
     getUserAuth(callback){
         return httpVerbs.doGet("./api/user/auth", callback);
     },
@@ -125,7 +132,7 @@ modalIn.addEventListener('click', (e) => {
         };
 
         if (modalEmailIn.value && modalPasswordlIn.value) {
-            userRepository.getUserByEmail(modalEmailIn.value, requestAuth);
+            userRepository.getOAuthUser(modalEmailIn.value, modalPasswordlIn.value, requestAuth);
         }
     }
 
