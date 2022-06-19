@@ -54,6 +54,7 @@ public class BoardController {
         Board board = new Board();
         board.setId(boardDto.getId());
         board.setEndsOn(boardDto.getEndsOn());
+        board.setMaxLikesPerUser(boardDto.getMaxLikesPerUser());
         board.setCreationDate(boardDto.getCreationDate());
         board.setName(boardDto.getName());
         board.setOwner(userService.findById(boardDto.getOwner()));

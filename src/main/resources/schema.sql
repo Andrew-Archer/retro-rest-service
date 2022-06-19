@@ -22,6 +22,7 @@ CREATE TABLE public.board (
 	id uuid NOT NULL,
 	name_ varchar(255) NOT NULL,
 	creation_Date timestamp not null,
+	max_likes_per_user INT,
 	ends_on timestamp,
 	owner_id uuid NOT NULL,
 	CONSTRAINT board_pkey PRIMARY KEY (id)

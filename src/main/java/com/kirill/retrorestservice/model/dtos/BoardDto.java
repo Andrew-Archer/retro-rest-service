@@ -15,6 +15,7 @@ public class BoardDto {
     private Date endsOn;
     private Date creationDate;
     private String name;
+    private Integer maxLikesPerUser;
     private List<BoardColumnDto> columns;
     private UUID owner;
 
@@ -24,6 +25,7 @@ public class BoardDto {
                 .id(board.getId())
                 .owner(board.getOwner().getId())
                 .endsOn(board.getEndsOn())
+                .maxLikesPerUser(board.getMaxLikesPerUser())
                 .creationDate(board.getCreationDate())
                 .name(board.getName())
                 .columns(BoardColumnDto.toDtos(board.getColumns()))

@@ -18,6 +18,8 @@ public class Board {
     @Column(name = "NAME_", nullable = false)
     private String name;
 
+    @Column(name = "MAX_LIKES_PER_USER")
+    private Integer maxLikesPerUser;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardColumn> columns;
@@ -82,5 +84,11 @@ public class Board {
         this.endsOn = endsOn;
     }
 
+    public Integer getMaxLikesPerUser() {
+        return maxLikesPerUser;
+    }
 
+    public void setMaxLikesPerUser(Integer maxLikesPerUser) {
+        this.maxLikesPerUser = maxLikesPerUser;
+    }
 }
