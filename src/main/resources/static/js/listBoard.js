@@ -329,12 +329,14 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       let textAddBoardSpan = createElementWithClasses('span', ['add-board-text']);
       textAddBoardSpan.textContent = 'Добавить доску';
       this.newBoard.appendChild(textAddBoardSpan);
-  
-      this.listBoards.forEach((board) => {
-        let cardBoard = new CardBoard(board.name, board.columns, board.creationDate, this.contentCards, board.id);
-        cardBoard.createCardBoard();
-      });
-  
+
+      if (this.listBoards !== undefined) {
+        this.listBoards.forEach((board) => {
+                let cardBoard = new CardBoard(board.name, board.columns, board.creationDate, this.contentCards, board.id);
+                cardBoard.createCardBoard();
+              });
+      }
+
       const modalBoard = createModalNewBoard();
       const modal = modalBoard.modal;
       this.parentEl.appendChild(modal);
