@@ -846,6 +846,14 @@ body, h3 {
     color: #444444;
 }
 
+.max-like__text,
+.max-like__count {
+    font-family: 'Fira Sans';
+    font-size: 24px;
+    line-height: 30px;
+    color: #444444;
+}
+
 .block {
     display: block;
 }
