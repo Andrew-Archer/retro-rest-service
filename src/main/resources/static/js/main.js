@@ -39,7 +39,7 @@ let userRepository = {
         return httpVerbs.doGet("./api/user/" + id, callback);
     },
     getOAuthUser(id, pass, callback){
-        return window.fetch("./api/user/email/", {
+        return window.fetch("./api/user/email/" + id, {
         "headers": {
                 "Authorization": "Basic " + btoa(id + ":" + pass),
             },
