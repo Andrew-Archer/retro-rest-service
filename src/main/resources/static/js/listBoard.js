@@ -740,7 +740,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       if (sessionStorage.getItem('id')) {
         spanTitle.addEventListener('click', (e) => {
           e.preventDefault();
-          // inputEdit.value = spanTitle.textContent;
+          inputEdit.value = spanTitle.textContent;
           isPause = false;
           divEdit.removeChild(spanTitle);
           divEdit.appendChild(divEditInp);
@@ -855,7 +855,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         nameSpan.addEventListener('click', (e) => {
           isPause = false;
           e.preventDefault();
-          // inputEdit.value = nameSpan.textContent;
+          inputEdit.value = nameSpan.textContent;
           div80.removeChild(nameSpan);
           div80.appendChild(divEdit);
           div80.classList.add('edit');
@@ -1132,7 +1132,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       commentSpan.addEventListener('click', (e) => {
         e.preventDefault();
         isPause = false;
-        // inputEdit.value = commentSpan.textContent;
+        inputEdit.value = commentSpan.textContent;
         this.commentTextDiv.removeChild(commentSpan);
         this.commentTextDiv.appendChild(divEdit);
         this.commentTextDiv.classList.add('edit');
