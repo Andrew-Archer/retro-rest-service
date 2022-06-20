@@ -45,7 +45,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //Enable authorization
                 .authorizeRequests()
                 //Allow access to static resources as js, images, css
-                .antMatchers("/",
+                /*.antMatchers("/",
+                        "/Test.html",
                         "/error**",
                         "/api/user/auth",
                         LOGIN_PAGE_URL,
@@ -55,7 +56,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/images/**",
                         "/oauth2/**",
                         "/api/report/getFile/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/listBoard.html").permitAll()*/
+                .anyRequest().permitAll()
                 .and().logout().permitAll()
                 .and()
                 .csrf().disable()
