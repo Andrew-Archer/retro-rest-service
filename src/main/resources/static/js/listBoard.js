@@ -67,12 +67,13 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     getBoardById(id, callback) {
       return httpVerbs.doGet("./api/board/"+id, callback);
     },
-    updateBoard(id, ownerId, name, time, callback) {
+    updateBoard(id, ownerId, name, time, callback, maxLike) {
       return httpVerbs.doPut('./api/board', {
         "id": id,
         "owner": ownerId,
         "name": name,
-        "endsOn": time
+        "endsOn": time,
+        "maxLikesPerUser": maxLike
       },
       callback);
     },
@@ -238,12 +239,15 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       if (res) {
         board = JSON.parse(res);
         const boardNew = new Board(board.name, board.columns, board.creationDate, this.parentEl, board.id, board.maxLikesPerUser, board.endsOn);
+        if (!sessionStorage.getItem('id') && !sessionStorage.getItem('maxLike')) {
+          sessionStorage.setItem('maxLike', board.maxLikesPerUser);
+        }
         boardNew.createBoard();
         name.value = '';
         if (board.endsOn) {
           let date = new Date(board.endsOn).getTime();
           let end = new Date(date - Date.now());
-          timerBox = createTimer(end.getMinutes(), end.getSeconds());
+          timerBox = createTimer(end.getMinutes(), end.getSeconds(), board.id, board.name, board.maxLikesPerUser);
           header.appendChild(timerBox);
         }
       } else {
@@ -383,7 +387,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
               if (board.endsOn) {
                 let date = new Date(board.endsOn).getTime();
                 let end = new Date(date - Date.now());
-                timerBox = createTimer(end.getMinutes(), end.getSeconds());
+                timerBox = createTimer(end.getMinutes(), end.getSeconds(), board.id, board.name, board.maxLikesPerUser);
                 header.appendChild(timerBox);
               }
             })
@@ -1192,7 +1196,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     return {strFullDate, strDate};
   }
   
-  function createTimer(minutes, seconds) {
+  function createTimer(minutes, seconds, idBoard, nameBoard, maxLike) {
     const timerBox = document.createElement('div');
     let times = [minutes, seconds];
   
@@ -1201,6 +1205,9 @@ if (!sessionStorage.getItem('id') && !location.hash) {
         times[1]--;
         if (times[0] == 0 && times[1] == 0) {
           clearInterval(tm);
+          if (sessionStorage.getItem('id')) {
+            boardRepository.updateBoard(idBoard, sessionStorage.getItem('id'), nameBoard, null, undefined, maxLike);
+          }
           console.log('Время вышло');
         } else if (times[1] == -1) {
           times[1] = 59;
@@ -1312,9 +1319,7 @@ if (!sessionStorage.getItem('id') && !location.hash) {
       createInputColumn(i, columnsDiv);
       i++;
     })
-  
-  
-  
+
     const containerbtnDiv = createElementWithClasses('div', ['containerBtn']);
     modalDiv.appendChild(containerbtnDiv);
     const okButton = createElementWithClasses('button', ['btn', 'modal-btn', 'ok']);
@@ -1324,22 +1329,8 @@ if (!sessionStorage.getItem('id') && !location.hash) {
     cancelButton.textContent = 'Закрыть';
     containerbtnDiv.appendChild(cancelButton);
   
-  
-    // let columns = [];
-    // let name = '';
-    // okButton.addEventListener('click', (e) => {
-    //     e.preventDefault();
-    //     name = nameInput.value;
-    //     let listcolumns = columnsDiv.querySelectorAll('.inputNewColumn');
-    //     listcolumns.forEach((column) => {
-    //         columns.push(column.value);
-    //     });
-    // })
-  
     return {
       modal: modalContentDiv,
-      // columns: columns,
-      // name: name
     };
   }
   
